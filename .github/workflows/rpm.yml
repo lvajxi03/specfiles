@@ -1,0 +1,110 @@
+name: Build RPM packages
+
+on:
+  push:
+    paths:
+      - "rpm/**"
+      - ".github/workflows/build-packages.yml"
+  pull_request:
+    paths:
+      - "rpm/**"
+      - ".github/workflows/build-packages.yml"
+
+jobs:
+  build:
+    name: Build ${{ matrix.package }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - kde-refugee-pack-minimal
+          - kde-refugee-pack-standard
+          - kde-refugee-pack-full
+
+    container:
+      image: fedora:44
+
+    steps:
+      - name: Install build tools
+        run: |
+          dnf install -y \
+            rpm-build \
+            rpmdevtools \
+            rpmlint
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare rpmbuild tree
+        run: |
+          rpmdev-setuptree
+
+      - name: Copy spec
+        run: |
+          cp rpm/${{ matrix.package }}.spec ~/rpmbuild/SPECS/
+
+      - name: Lint spec
+        run: |
+          rpmlint rpm/${{ matrix.package }}.spec
+
+      - name: Build RPM
+        run: |
+          rpmbuild -ba ~/rpmbuild/SPECS/${{ matrix.package }}.spec
+
+      - name: Show result
+        run: |
+          find ~/rpmbuild/RPMS ~/rpmbuild/SRPMS -type f -print
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p artifacts
+          cp ~/rpmbuild/RPMS/noarch/*.rpm artifacts/
+          cp ~/rpmbuild/SRPMS/*.src.rpm artifacts/
+
+      - name: Upload RPM
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package }}
+          path: artifacts/
+
+  install-test:
+    name: Test package installation
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: fedora:44
+
+    steps:
+      - name: Install tools
+        run: |
+          dnf install -y findutils
+
+      - name: Download minimal
+        uses: actions/download-artifact@v4
+        with:
+          name: kde-refugee-pack-minimal
+          path: rpms/
+
+      - name: Download standard
+        uses: actions/download-artifact@v4
+        with:
+          name: kde-refugee-pack-standard
+          path: rpms/
+
+      - name: Download full
+        uses: actions/download-artifact@v4
+        with:
+          name: kde-refugee-pack-full
+          path: rpms/
+
+      - name: Show packages
+        run: |
+          find rpms -type f -name '*.rpm' -print
+
+      - name: Install refugee pack
+        run: |
+          dnf install -y rpms/*.noarch.rpm
