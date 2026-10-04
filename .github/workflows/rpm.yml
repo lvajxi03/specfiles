@@ -3,11 +3,11 @@ name: Build RPM packages
 on:
   push:
     paths:
-      - "rpm/**"
+      - "specs/**"
       - ".github/workflows/build-packages.yml"
   pull_request:
     paths:
-      - "rpm/**"
+      - "specs/**"
       - ".github/workflows/build-packages.yml"
 
 jobs:
@@ -43,11 +43,11 @@ jobs:
 
       - name: Copy spec
         run: |
-          cp rpm/${{ matrix.package }}.spec ~/rpmbuild/SPECS/
+          cp specs/${{ matrix.package }}.spec ~/rpmbuild/SPECS/
 
       - name: Lint spec
         run: |
-          rpmlint rpm/${{ matrix.package }}.spec
+          rpmlint specs/${{ matrix.package }}.spec
 
       - name: Build RPM
         run: |
