@@ -1,15 +1,14 @@
 Name:           kde-refugee-pack-full
-Version:        0.0.1
+Version:        0.0.2
 Release:        1%{?dist}
 Summary:        KDE refugee pack, full version
 
 License:        MIT
 BuildArch:	noarch
 
-Requires:       kde-refugee-pack-standard = 0.0.1
+Requires:       kde-refugee-pack-standard = 0.0.2
 Requires:       kitty
-Requires:       stalonetray
-
+Requires:       Thunar
 
 %description
 Mandatory metapackage for everyone who leaves KDE for fvwm3

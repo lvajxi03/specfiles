@@ -1,12 +1,12 @@
 Name:           kde-refugee-pack-standard
-Version:        0.0.1
+Version:        0.0.2
 Release:        1%{?dist}
 Summary:        KDE refugee pack, standard version
 
 License:        MIT
 BuildArch:	noarch
 
-Requires:	kde-refugee-pack-minimal = 0.0.1
+Requires:	kde-refugee-pack-minimal = 0.0.2
 Requires:	blueman
 Requires:	brightnessctl
 Requires:	dunst
@@ -19,6 +19,7 @@ Requires:	playerctl
 Requires:	udiskie
 Requires:	volumeicon
 Requires:	qterminal
+Requires:	stalonetray
 
 %description
 Mandatory metapackage for everyone who leaves KDE for fvwm3

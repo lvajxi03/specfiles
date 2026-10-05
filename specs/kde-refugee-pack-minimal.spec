@@ -1,5 +1,5 @@
 Name:           kde-refugee-pack-minimal
-Version:        0.0.1
+Version:        0.0.2
 Release:        1%{?dist}
 Summary:        KDE refugee pack, minimal version
 
@@ -13,7 +13,6 @@ Requires:	feh
 Requires:	rofi
 Requires:	autorandr
 Requires:	arandr
-
 
 %description
 Mandatory metapackage for everyone who leaves KDE for fvwm3
