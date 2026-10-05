@@ -78,14 +78,6 @@ jobs:
     container:
       image: fedora:44
 
-    strategy:
-      fail-fast: false
-      matrix:
-        package:
-          - kde-refugee-pack-minimal
-          - kde-refugee-pack-standard
-          - kde-refugee-pack-full
-
     steps:
       - name: Install tools
         run: |
