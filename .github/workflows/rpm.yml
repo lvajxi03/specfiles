@@ -78,6 +78,14 @@ jobs:
     container:
       image: fedora:44
 
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - kde-refugee-pack-minimal
+          - kde-refugee-pack-standard
+          - kde-refugee-pack-full
+
     steps:
       - name: Install tools
         run: |
@@ -89,19 +97,13 @@ jobs:
           name: kde-refugee-pack-minimal
           path: rpms/
 
-      - name: Download standard archive
+      - name: Download ${{ matrix.package }} archive
         uses: actions/download-artifact@v4
         with:
-          name: kde-refugee-pack-standard
+          name: ${{ matrix.package }}
           path: rpms/
 
-      - name: Download full archive
-        uses: actions/download-artifact@v4
-        with:
-          name: kde-refugee-pack-full
-          path: rpms/
-
-      - name: Upload binary RPM
+      - name: Download ${{ matrix.package }} rpm
         uses: actions/upload-artifact@v7
         with:
           path: rpms/${{ matrix.package }}-*.noarch.rpm
