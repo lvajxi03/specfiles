@@ -91,12 +91,6 @@ jobs:
         run: |
           dnf install -y findutils
 
-      - name: Download minimal archive
-        uses: actions/download-artifact@v4
-        with:
-          name: kde-refugee-pack-minimal
-          path: rpms/
-
       - name: Download ${{ matrix.package }} archive
         uses: actions/download-artifact@v4
         with:
@@ -109,10 +103,6 @@ jobs:
           path: rpms/${{ matrix.package }}-*.noarch.rpm
           archive: false
 
-      - name: Show packages
-        run: |
-          find rpms -type f -name '*.rpm' -print
-
       - name: Install refugee pack
         run: |
-          dnf install -y rpms/*.noarch.rpm
+          dnf install -y rpms/${{ matrix.package }}-*.noarch.rpm
