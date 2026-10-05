@@ -91,18 +91,42 @@ jobs:
         run: |
           dnf install -y findutils
 
-      - name: Download ${{ matrix.package }} archive
+      - name: Download kde-refugee-pack-minimal archive
         uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.package }}
+          name: kde-refugee-pack-minimal
           path: rpms/
 
-      - name: Download ${{ matrix.package }} rpm
+      - name: Download kde-refugee-pack-standard archive
+        uses: actions/download-artifact@v4
+        with:
+          name: kde-refugee-pack-standard
+          path: rpms/
+
+      - name: Download kde-refugee-pack-full archive
+        uses: actions/download-artifact@v4
+        with:
+          name: kde-refugee-pack-full
+          path: rpms/
+
+      - name: Download kde-refugee-pack-minimal rpm
         uses: actions/upload-artifact@v7
         with:
-          path: rpms/${{ matrix.package }}-*.noarch.rpm
+          path: rpms/kde-refugee-pack-minimal-*.noarch.rpm
+          archive: false
+
+      - name: Download kde-refugee-pack-standard rpm
+        uses: actions/upload-artifact@v7
+        with:
+          path: rpms/kde-refugee-pack-standard-*.noarch.rpm
+          archive: false
+
+      - name: Download kde-refugee-pack-full rpm
+        uses: actions/upload-artifact@v7
+        with:
+          path: rpms/kde-refugee-pack-full-*.noarch.rpm
           archive: false
 
       - name: Install refugee pack
         run: |
-          dnf install -y rpms/${{ matrix.package }}-*.noarch.rpm
+          dnf install -y rpms/kde-refugee-pack-minimal-*.noarch.rpm rpms/kde-refugee-pack-standard-*.noarch.rpm rpms/kde-refugee-pack-full-*.noarch.rpm
