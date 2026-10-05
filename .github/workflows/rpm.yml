@@ -83,23 +83,29 @@ jobs:
         run: |
           dnf install -y findutils
 
-      - name: Download minimal
+      - name: Download minimal archive
         uses: actions/download-artifact@v4
         with:
           name: kde-refugee-pack-minimal
           path: rpms/
 
-      - name: Download standard
+      - name: Download standard archive
         uses: actions/download-artifact@v4
         with:
           name: kde-refugee-pack-standard
           path: rpms/
 
-      - name: Download full
+      - name: Download full archive
         uses: actions/download-artifact@v4
         with:
           name: kde-refugee-pack-full
           path: rpms/
+
+      - name: Upload binary RPM
+        uses: actions/upload-artifact@v7
+        with:
+          path: artifacts/${{ matrix.package }}-*.noarch.rpm
+          archive: false
 
       - name: Show packages
         run: |
