@@ -4,11 +4,11 @@ on:
   push:
     paths:
       - "specs/**"
-      - ".github/workflows/build-packages.yml"
+      - ".github/workflows/rpm.yml"
   pull_request:
     paths:
       - "specs/**"
-      - ".github/workflows/build-packages.yml"
+      - ".github/workflows/rpm.yml"
 
 jobs:
   build:
